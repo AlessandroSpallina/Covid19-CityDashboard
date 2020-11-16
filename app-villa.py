@@ -11,8 +11,15 @@ df = pd.read_csv(
     'https://raw.githubusercontent.com/AKILL97/Datasets-COVID-19/main/table.csv', parse_dates=True)
 df['data'] = pd.to_datetime(df['data'])
 
+external_scripts = [
+    {
+        'data-goatcounter': 'https://covidvillarosa.goatcounter.com/count',
+        'async src': '//gc.zgo.at/count.js'
+    }
+]
+
 # Initialise the app
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_scripts=external_scripts)
 
 
 def get_line_figure_from_keys(keys, title, color):
@@ -271,7 +278,7 @@ app.layout = html.Div(
                             '''. Da un'idea di ''',
                             dcc.Link("Gianluca Spallina", href="http://t.me/Giasball"),
                             '''. Sviluppato da ''',
-                            dcc.Link("Alessandro Spallina", href="http://t.me/SK3LA"),
+                            dcc.Link("Alessandro Spallina", href="http://t.me/SK333LA"),
                             '''.'''
                         ])
                     ]
