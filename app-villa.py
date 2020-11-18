@@ -9,7 +9,7 @@ import io
 import requests
 
 # Load data
-data = requests.get('https://raw.githubusercontent.com/AKILL97/Datasets-COVID-19/main/table.csv').text
+data = requests.get('https://raw.githubusercontent.com/ComuneDiVillarosa/Covid-19/main/dataset.csv').text
 buffer = io.StringIO(data)
 df = pd.read_csv(buffer, parse_dates=True)
 df['data'] = pd.to_datetime(df['data'])
@@ -150,7 +150,6 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.P('''ATTENTIONE: I dati presenti al momento sono dati fittizi'''),
                         html.P('''Raccolta dati Covid-19 Comune di Villarosa (EN).'''),
                         html.P('''Questo sito ha l'intento di fornire ai cittadini la possibilità di conoscere 
                          l'attuale situazione relativa al covid-19 nel territorio.'''),
@@ -174,8 +173,8 @@ app.layout = html.Div(
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(get_last_value('ospedalizzati')['value']), html.P("Ospedalizzati"),
-                                     html.Div(delta_html(get_last_value('ospedalizzati')['delta_giornaliero']))],
+                                    [html.H6(get_last_value('guariti')['value']), html.P("Guariti"),
+                                     html.Div(delta_html(get_last_value('guariti')['delta_giornaliero']))],
                                     id="guariti_attuali",
                                     className="mini_container",
                                 ),
@@ -194,7 +193,7 @@ app.layout = html.Div(
                                 dcc.Graph(config={'displayModeBar': False},
                                           animate=False,
                                           figure=get_line_figure_from_keys(
-                                              ['positivi', 'quarantena', 'ospedalizzati', 'decessi'],
+                                              ['positivi', 'quarantena', 'guariti', 'decessi'],
                                               'Grafico generale variabili',
                                               ['#C94747', '#1f77b4', '#2ca02c', '#bcbd22']
                                           ))
@@ -254,11 +253,11 @@ app.layout = html.Div(
                                 dcc.Graph(config={'displayModeBar': False},
                                           animate=False,
                                           figure=get_line_figure_from_keys(
-                                              ['ospedalizzati'],
-                                              'Soggetti attualmente ospedalizzati', ['#2ca02c']
+                                              ['guariti'],
+                                              'Soggetti attualmente guariti', ['#2ca02c']
                                           )),
                                 html.P('''Nota: Grafico a linee che indica l'andamento dei soggetti 
-                                        ospedalizzati nel tempo.'''),
+                                        guariti nel tempo.'''),
                             ],
                             className="pretty_container",
                         ),
@@ -277,7 +276,7 @@ app.layout = html.Div(
                         ),
                         html.P([
                             '''Dataset a questo ''',
-                            dcc.Link("link", href="https://github.com/AKILL97/Datasets-COVID-19/blob/main/table.csv"),
+                            dcc.Link("link", href="https://github.com/ComuneDiVillarosa/Covid-19/blob/main/dataset.csv"),
                             '''. Da un'idea di ''',
                             dcc.Link("Gianluca Spallina", href="http://t.me/Giasball"),
                             '''. Sviluppato da ''',
