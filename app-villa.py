@@ -24,7 +24,6 @@ def load_data():
         buffer = io.StringIO(data)
         df = pd.read_csv(buffer, parse_dates=True)
         df['data'] = pd.to_datetime(df['data'])
-        print("QUIQUIQUQUIUIQUIQUIQUIQUIQUI")
 
 
 df = None
