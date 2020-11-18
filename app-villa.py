@@ -5,10 +5,13 @@ import dash_html_components as html
 import dash_core_components as dcc
 import plotly.graph_objects as go
 import os
+import io
+import requests
 
 # Load data
-df = pd.read_csv(
-    'https://raw.githubusercontent.com/AKILL97/Datasets-COVID-19/main/table.csv', parse_dates=True)
+data = requests.get('https://raw.githubusercontent.com/AKILL97/Datasets-COVID-19/main/table.csv').text
+buffer = io.StringIO(data)
+df = pd.read_csv(buffer, parse_dates=True)
 df['data'] = pd.to_datetime(df['data'])
 
 external_scripts = [
