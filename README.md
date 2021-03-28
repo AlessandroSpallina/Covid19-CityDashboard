@@ -13,3 +13,7 @@ $ heroku container:push web
 $ heroku container:release web
 
 ```
+
+## Supported cities
+* [Villarosa](https://covidvillarosa.herokuapp.com/)
+* [Calascibetta](https://covidcalascibetta.herokuapp.com/)
