@@ -32,12 +32,7 @@ df = None
 last_load_data = 0
 load_data()
 
-external_scripts = [
-    {
-        'data-goatcounter': 'https://covidvillarosa.goatcounter.com/count',
-        'async src': '//gc.zgo.at/count.js'
-    }
-]
+external_scripts = config.EXTERNAL_SCRIPTS
 
 # Initialise the app
 app = dash.Dash(__name__, external_scripts=external_scripts)
