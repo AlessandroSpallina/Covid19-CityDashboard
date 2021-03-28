@@ -27,3 +27,10 @@ DASHBOARD_FOOTER = [
     html.A("Alessandro Spallina", href="https://github.com/AlessandroSpallina", target="_blank"),
     '''.'''
 ]
+
+EXTERNAL_SCRIPTS = [
+    {
+        'data-goatcounter': 'https://covidvillarosa.goatcounter.com/count',
+        'async src': '//gc.zgo.at/count.js'
+    }
+]
