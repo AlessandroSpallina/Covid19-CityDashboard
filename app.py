@@ -10,6 +10,8 @@ import io
 import requests
 import time
 
+import config
+
 
 # Load data
 def load_data():
@@ -17,9 +19,9 @@ def load_data():
 
     if (int(time.time()) - last_load_data) > (1 * 60):
         last_load_data = int(time.time())
-        req = requests.get('https://raw.githubusercontent.com/ComuneDiVillarosa/Covid-19/main/dataset.csv')
+        req = requests.get(config.DATASET_RAW_CSV_URL)
         if req.status_code != 200:
-            print(f"BANNATO DA GITHUB??? {req.status_code} {req.reason} {req.text}")
+            print(f"WTF ??? {req.status_code} {req.reason} {req.text}")
         data = req.text
         buffer = io.StringIO(data)
         df = pd.read_csv(buffer, parse_dates=True)
@@ -67,7 +69,6 @@ def get_line_figure_from_keys(keys, title, color):
 
 
 def get_bar_figure(data, title, legend_name, color):
-    fig = go.Figure()
     fig = go.Figure()
     for k in range(len(legend_name)):
         fig.add_trace(go.Bar(x=df['data'], y=data[k], name=legend_name[k], text=data[k],
@@ -123,8 +124,8 @@ def serve_layout():
                     html.Div(
                         [
                             html.Img(
-                                src=app.get_asset_url("villarosa-logo.png"),
-                                id="villa-image",
+                                src=app.get_asset_url(config.LOGO_PATH),
+                                id="logo-comune",
                                 style={
                                     "height": "100px",
                                     "width": "auto",
@@ -139,7 +140,7 @@ def serve_layout():
                             html.Div(
                                 [
                                     html.H3(
-                                        "Covid-19 Villarosa",
+                                        f"Covid-19 {config.CITY_NAME}",
                                         style={"margin-bottom": "0px"},
                                     ),
                                     html.H5(
@@ -154,8 +155,8 @@ def serve_layout():
                     html.Div(
                         [
                             html.A(
-                                html.Button("Il Sindaco Informa", id="learn-more-button"),
-                                href="https://www.facebook.com/fascianasindaco",
+                                html.Button(config.MAYOR_NAME, id="learn-more-button"),
+                                href=config.MAYOR_LINK,
                             ),
                         ],
                         className="one-third column",
@@ -170,13 +171,7 @@ def serve_layout():
                 [
                     html.Div(
                         [
-                            html.P('''Raccolta dati Covid-19 Comune di Villarosa (EN).'''),
-                            html.P('''Questo sito ha l'intento di fornire ai cittadini la possibilità di conoscere 
-                         l'attuale situazione relativa al covid-19 nel territorio.'''),
-                            html.P('''Dati raccolti ed estrapolati dal Comune di Villarosa in concomitanza ai dati 
-                        comunicati dall'Azienda Sanitaria Provinciale di Enna. '''),
-                            dcc.Link("Iscriviti al canale telegram per il bollettino giornaliero!",
-                                     href="https://t.me/covid19villarosa"),
+                            *config.DASHBOARD_DESCRIPTION,
                             html.H6(f"Dati aggiornati al {df['data'].tail(1).to_list()[0].strftime('%d/%m/%Y')}"),
                             html.Div(
                                 [
@@ -295,16 +290,9 @@ def serve_layout():
                                 ],
                                 className="pretty_container",
                             ),
-                            html.P([
-                                '''Dataset a questo ''',
-                                dcc.Link("link",
-                                         href="https://github.com/ComuneDiVillarosa/Covid-19/blob/main/dataset.csv"),
-                                '''. Da un'idea di ''',
-                                dcc.Link("Gianluca Spallina", href="http://t.me/Giasball"),
-                                '''. Sviluppato da ''',
-                                dcc.Link("Alessandro Spallina", href="http://t.me/SK333LA"),
-                                '''.'''
-                            ])
+                            html.P(
+                                config.DASHBOARD_FOOTER
+                            )
                         ]
                     )
                 ]
@@ -317,4 +305,5 @@ app.layout = serve_layout
 
 # Run the app
 if __name__ == '__main__':
+    app.title = f"Covid19{config.CITY_NAME} | Dashboard"
     app.run_server(host='0.0.0.0', debug=os.getenv('DEBUG', False), port=os.getenv('PORT', 8050))
